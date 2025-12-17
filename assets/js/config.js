@@ -42,7 +42,10 @@ const CONFIG = {
         TOKEN_KEY: 'nexo_access_token',
         REFRESH_KEY: 'nexo_refresh_token',
         USER_KEY: 'nexo_user_data',
-        TOKEN_EXPIRY_BUFFER: 5 * 60 * 1000 // 5 minutos en millisegundos
+        TOKEN_EXPIRY_BUFFER: 5 * 60 * 1000, // 5 minutos en millisegundos
+        TOKEN_CHECK_INTERVAL: 30000, // Verificar token cada 30 segundos
+        AUTO_LOGOUT_WARNING: 2 * 60 * 1000, // Advertir 2 minutos antes del logout automático
+        SESSION_TIMEOUT: 24 * 60 * 60 * 1000 // 24 horas timeout de sesión
     },
     
     // Configuración de archivos

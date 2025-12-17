@@ -86,6 +86,11 @@ const Auth = {
             if (response.access_token && response.user) {
                 this.saveAuthData(response, response.user);
                 
+                // Actualizar estado global
+                if (typeof GlobalState !== 'undefined') {
+                    GlobalState.onLoginSuccess(response.user, response);
+                }
+                
                 // Actualizar navbar después del login
                 if (typeof NavbarComponent !== 'undefined') {
                     NavbarComponent.update();
@@ -147,6 +152,11 @@ const Auth = {
             
             // Limpiar datos locales
             this.clearAuthData();
+            
+            // Actualizar estado global
+            if (typeof GlobalState !== 'undefined') {
+                GlobalState.onLogout();
+            }
             
             // Actualizar navbar
             if (typeof NavbarComponent !== 'undefined') {
