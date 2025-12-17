@@ -1,0 +1,39 @@
+{
+  "name": "nexo-frontend",
+  "version": "1.0.0",
+  "description": "Frontend de la red social Nexo - SPA con JavaScript vanilla",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 3000",
+    "dev": "python -m http.server 3000",
+    "serve": "powershell -ExecutionPolicy Bypass -File start-server.ps1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usuario/nexo-frontend.git"
+  },
+  "keywords": [
+    "social-network",
+    "spa",
+    "javascript",
+    "bootstrap",
+    "frontend",
+    "nexo"
+  ],
+  "author": "Nexo Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^5.3.0",
+    "font-awesome": "^6.4.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.7.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

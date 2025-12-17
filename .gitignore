@@ -1,0 +1,72 @@
+# ===================================
+# NEXO FRONTEND - .GITIGNORE
+# ===================================
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencias
+node_modules/
+npm-shrinkwrap.json
+package-lock.json
+yarn.lock
+
+# Archivos de entorno
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de cache
+.cache/
+*.tsbuildinfo
+
+# Archivos de sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos temporales
+*.tmp
+*.temp
+.tmp/
+
+# Builds y distribución
+dist/
+build/
+out/
+
+# Archivos de prueba
+coverage/
+.nyc_output/
+
+# Archivos específicos del proyecto
+assets/img/*.png
+assets/img/*.jpg
+assets/img/*.jpeg
+assets/img/*.gif
+assets/img/*.webp
+
+# Excepciones - mantener algunos archivos
+!assets/img/default-avatar.png
+!assets/img/.gitkeep
+
+# Archivos de backup
+*.bak
+*.backup
