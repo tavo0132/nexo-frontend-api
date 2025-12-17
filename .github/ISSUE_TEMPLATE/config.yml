@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/tavo0132/nexo-frontend-api/discussions
+    about: Para preguntas generales, ideas y conversaciones con la comunidad
+  - name: 📧 Contacto Directo
+    url: mailto:tavo0132@gmail.com
+    about: Para reportes de seguridad o consultas privadas
+  - name: 📖 Documentación
+    url: https://github.com/tavo0132/nexo-frontend-api/blob/main/README.md
+    about: Revisa la documentación completa del proyecto
+  - name: 🗺️ Roadmap
+    url: https://github.com/tavo0132/nexo-frontend-api/blob/main/ROADMAP.md
+    about: Ve el plan de desarrollo futuro
+  - name: 🤝 Guía de Contribución
+    url: https://github.com/tavo0132/nexo-frontend-api/blob/main/CONTRIBUTING.md
+    about: Aprende como contribuir al proyecto

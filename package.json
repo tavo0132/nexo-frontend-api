@@ -1,39 +1,74 @@
 {
   "name": "nexo-frontend",
   "version": "1.0.0",
-  "description": "Frontend de la red social Nexo - SPA con JavaScript vanilla",
+  "description": "Frontend moderno para Nexo - Red social con SPA, Bootstrap y autenticación JWT",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 3000",
-    "dev": "python -m http.server 3000",
-    "serve": "powershell -ExecutionPolicy Bypass -File start-server.ps1"
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "serve": "powershell -ExecutionPolicy Bypass -File start-server.ps1",
+    "preview": "python -m http.server 8080",
+    "test": "echo \"Tests no configurados aún\" && exit 1",
+    "lint": "echo \"Linting no configurado aún\" && exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/usuario/nexo-frontend.git"
+    "url": "git+https://github.com/tavo0132/nexo-frontend-api.git"
   },
   "keywords": [
-    "social-network",
-    "spa",
-    "javascript",
-    "bootstrap",
+    "nexo",
     "frontend",
-    "nexo"
+    "spa",
+    "single-page-application", 
+    "bootstrap",
+    "bootstrap5",
+    "jwt",
+    "authentication",
+    "social-network",
+    "javascript",
+    "html5",
+    "css3",
+    "responsive",
+    "mobile-first",
+    "api-client",
+    "rest-api",
+    "flask-frontend",
+    "web-app"
   ],
-  "author": "Nexo Development Team",
+  "author": {
+    "name": "Gustavo",
+    "email": "tavo0132@gmail.com",
+    "url": "https://github.com/tavo0132"
+  },
   "license": "MIT",
+  "homepage": "https://github.com/tavo0132/nexo-frontend-api#readme",
+  "bugs": {
+    "url": "https://github.com/tavo0132/nexo-frontend-api/issues",
+    "email": "tavo0132@gmail.com"
+  },
   "dependencies": {
     "bootstrap": "^5.3.0",
     "font-awesome": "^6.4.0"
   },
   "devDependencies": {},
   "engines": {
-    "node": ">=14.0.0",
-    "python": ">=3.7.0"
+    "python": ">=3.8.0"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not dead"
-  ]
+    "not dead",
+    "not ie 11"
+  ],
+  "config": {
+    "server": {
+      "port": 8000,
+      "host": "localhost"
+    },
+    "api": {
+      "baseUrl": "http://localhost:5000",
+      "timeout": 10000
+    }
+  },
+  "private": false
 }

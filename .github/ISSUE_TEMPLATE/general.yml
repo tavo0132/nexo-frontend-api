@@ -1,0 +1,81 @@
+name: 📋 General Issue
+description: Para otros tipos de reportes o consultas
+title: "[GENERAL] "
+labels: ["question", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **¿No es un bug ni una feature request?** 
+        Usa este template para preguntas generales, propuestas de mejora, 
+        discusiones de arquitectura o cualquier otro tipo de issue.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 📝 Tipo de Issue
+      description: ¿Qué tipo de issue es este?
+      options:
+        - ❓ Pregunta / Consulta
+        - 📖 Documentación
+        - 🎨 Diseño / UI/UX
+        - 🏗️ Arquitectura / Technical Debt
+        - 🔧 Configuración / Setup
+        - 🚀 Performance
+        - 🧪 Testing
+        - 🔒 Seguridad
+        - 📱 Compatibilidad
+        - 🌐 Integración
+        - 💡 Discusión / RFC
+        - 🔄 Refactoring
+        - 📊 Analytics / Metrics
+        - 🎯 Otro (especificar en descripción)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📄 Descripción
+      description: Describe detalladamente tu consulta, propuesta o problema
+      placeholder: "Explica claramente qué necesitas, propones o quieres discutir..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 🔍 Contexto
+      description: Proporciona contexto adicional que pueda ser relevante
+      placeholder: |
+        - ¿Qué te llevó a crear este issue?
+        - ¿Hay algún caso de uso específico?
+        - ¿Afecta a alguna funcionalidad existente?
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 💡 Propuesta (si aplica)
+      description: Si tienes una propuesta específica, descríbela aquí
+      placeholder: "Mi propuesta sería..."
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 🔗 Referencias
+      description: Enlaces, documentación o ejemplos relacionados
+      placeholder: |
+        - Enlaces a documentación relevante
+        - Issues relacionados
+        - Ejemplos en otros proyectos
+        - Artículos o recursos útiles
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      options:
+        - label: He buscado issues similares existentes
+          required: true
+        - label: He leído la documentación disponible
+        - label: He considerado si esto debería ser una discusión en lugar de un issue

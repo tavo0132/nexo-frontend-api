@@ -1,0 +1,182 @@
+name: 🐛 Bug Report
+description: Reporta un error o problema en Nexo Frontend
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomar el tiempo de reportar este bug. Esto nos ayuda a hacer Nexo Frontend mejor para todos.
+        
+        Antes de reportar, por favor verifica que:
+        - [ ] No sea un bug ya reportado en [Issues](https://github.com/tavo0132/nexo-frontend-api/issues)
+        - [ ] Hayas probado con la última versión
+        - [ ] El problema no sea de configuración local
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 Descripción del Bug
+      description: Una descripción clara y concisa del bug
+      placeholder: "El botón de login no responde cuando..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔄 Pasos para Reproducir
+      description: Pasos específicos para reproducir el comportamiento
+      placeholder: |
+        1. Ve a '...'
+        2. Haz clic en '...'
+        3. Desplázate hacia abajo hasta '...'
+        4. Ver error
+      value: |
+        1. 
+        2. 
+        3. 
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ Comportamiento Esperado
+      description: Una descripción clara de lo que esperabas que pasara
+      placeholder: "Debería mostrar el dashboard del usuario..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ Comportamiento Actual
+      description: Una descripción clara de lo que realmente pasa
+      placeholder: "En su lugar, muestra un error 404..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 Screenshots
+      description: Si aplica, añade screenshots para ayudar a explicar el problema
+      placeholder: "Arrastra y suelta las imágenes aquí..."
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 🌐 Navegador
+      description: ¿En qué navegador estás experimentando el problema?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Opera
+        - Otro (especificar en contexto adicional)
+    validations:
+      required: true
+
+  - type: input
+    id: browser-version
+    attributes:
+      label: 📊 Versión del Navegador
+      description: ¿Qué versión del navegador estás usando?
+      placeholder: "ej: 108.0.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: 📱 Dispositivo
+      description: ¿En qué tipo de dispositivo ocurre el problema?
+      options:
+        - Desktop Windows
+        - Desktop macOS
+        - Desktop Linux
+        - Mobile Android
+        - Mobile iOS
+        - Tablet Android
+        - Tablet iOS
+        - Otro (especificar en contexto adicional)
+    validations:
+      required: true
+
+  - type: input
+    id: resolution
+    attributes:
+      label: 🖥️ Resolución de Pantalla
+      description: ¿Cuál es la resolución de tu pantalla?
+      placeholder: "ej: 1920x1080, 1366x768, 375x667"
+
+  - type: textarea
+    id: console-logs
+    attributes:
+      label: 🔍 Logs de Consola
+      description: Si hay errores en la consola del navegador, pégalos aquí
+      placeholder: "Abre DevTools (F12) > Console y copia cualquier error..."
+      render: text
+
+  - type: textarea
+    id: network-logs
+    attributes:
+      label: 🌐 Errores de Red
+      description: Si hay errores de red, incluye los detalles
+      placeholder: "Abre DevTools (F12) > Network y reporta errores de API..."
+      render: text
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: ⚡ Severidad
+      description: ¿Qué tan severo consideras este bug?
+      options:
+        - 🔥 Crítico - La aplicación no funciona
+        - ⚠️ Alto - Funcionalidad principal afectada
+        - 📋 Medio - Funcionalidad secundaria afectada
+        - 💡 Bajo - Problema cosmético o menor
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproducible
+    attributes:
+      label: 🎯 Frecuencia
+      description: ¿Con qué frecuencia puedes reproducir este bug?
+      options:
+        - Siempre (100%)
+        - Frecuentemente (75%)
+        - A veces (50%)
+        - Raramente (25%)
+        - Una sola vez
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 📋 Contexto Adicional
+      description: Cualquier otra información que pueda ser útil
+      placeholder: |
+        - ¿Estás usando algún plugin/extensión del navegador?
+        - ¿Hay algún patrón específico que cause el bug?
+        - ¿Funciona en otros navegadores?
+        - ¿Alguna configuración especial de red?
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Confirmación
+      description: Confirma lo siguiente antes de enviar
+      options:
+        - label: He verificado que este bug no ha sido reportado anteriormente
+          required: true
+        - label: He probado con la última versión disponible
+          required: true
+        - label: He incluido toda la información necesaria para reproducir el bug
+          required: true
+        - label: Acepto que este reporte sea público
+          required: true

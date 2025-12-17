@@ -1,0 +1,209 @@
+name: ✨ Feature Request
+description: Sugiere una nueva característica o mejora para Nexo Frontend
+title: "[FEATURE] "
+labels: ["enhancement", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Gracias por querer contribuir a mejorar Nexo Frontend! 🚀
+        
+        Las nuevas características hacen que el producto sea mejor para toda la comunidad.
+        Por favor, proporciona la mayor información posible para que podamos entender tu propuesta.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🎯 ¿Qué problema resuelve esta característica?
+      description: Una descripción clara del problema o necesidad que esta característica abordaría
+      placeholder: "Como usuario, me frustra que no pueda... porque..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 Solución Propuesta
+      description: Una descripción clara y concisa de lo que quieres que suceda
+      placeholder: "Me gustaría que hubiera un botón/función que..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternativas Consideradas
+      description: Una descripción de cualquier solución alternativa que hayas considerado
+      placeholder: "También pensé en... pero esto no funcionaría porque..."
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: 📖 Historia de Usuario
+      description: Describe cómo un usuario interactuaría con esta característica
+      placeholder: |
+        Como [tipo de usuario]
+        Quiero [realizar alguna acción]
+        Para que [obtener algún beneficio]
+        
+        Ejemplo:
+        Como usuario registrado
+        Quiero poder buscar otros usuarios por nombre o email
+        Para que pueda conectarme con amigos fácilmente
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 🏷️ Categoría
+      description: ¿A qué área del frontend pertenece esta característica?
+      options:
+        - 🔐 Autenticación y Seguridad
+        - 👤 Perfil y Configuración de Usuario
+        - 👥 Social y Amistades
+        - 🔍 Búsqueda y Descubrimiento
+        - 💬 Mensajería y Chat
+        - 📱 UI/UX y Diseño
+        - 🔔 Notificaciones
+        - 📊 Dashboard y Analytics
+        - 🖼️ Multimedia y Contenido
+        - ⚙️ Configuración y Administración
+        - 🚀 Performance y Optimización
+        - 🌐 Integración con APIs
+        - 🎨 Personalización y Temas
+        - 📱 PWA y Mobile
+        - 🔧 Herramientas de Desarrollo
+        - Otro (especificar en detalles)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ Prioridad Sugerida
+      description: ¿Qué tan importante consideras esta característica?
+      options:
+        - 🔥 Alta - Necesaria para funcionalidad básica
+        - 📈 Media - Mejoraría significativamente la experiencia
+        - 💡 Baja - Nice to have, no urgente
+        - 🔮 Futura - Para consideración a largo plazo
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: 🛠️ Complejidad Estimada
+      description: ¿Qué tan compleja crees que sería implementar esto?
+      options:
+        - 🟢 Baja - Cambio simple en componentes existentes
+        - 🟡 Media - Requiere nuevos componentes o lógica
+        - 🟠 Alta - Cambios significativos en arquitectura
+        - 🔴 Muy Alta - Refactoring mayor o nuevas tecnologías
+        - ❓ No estoy seguro
+    validations:
+      required: true
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: 🎨 Mockups / Wireframes
+      description: Si tienes algún diseño visual de la característica, añádelo aquí
+      placeholder: "Arrastra y suelta imágenes, enlaces a Figma, o describe visualmente..."
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: 🔧 Detalles Técnicos
+      description: Si tienes ideas específicas sobre implementación técnica
+      placeholder: |
+        - ¿Requiere nuevos endpoints de API?
+        - ¿Necesita nuevos componentes de JavaScript?
+        - ¿Cambios en el CSS o diseño?
+        - ¿Integración con librerías externas?
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: ✅ Criterios de Aceptación
+      description: ¿Cómo sabríamos que esta característica está completa y funcionando?
+      placeholder: |
+        - [ ] El usuario puede hacer X
+        - [ ] La interfaz muestra Y
+        - [ ] Se valida Z correctamente
+        - [ ] Funciona en dispositivos móviles
+      value: |
+        - [ ] 
+        - [ ] 
+        - [ ] 
+
+  - type: dropdown
+    id: target-users
+    attributes:
+      label: 👥 Usuarios Objetivo
+      description: ¿Qué tipo de usuarios se beneficiarían más de esta característica?
+      options:
+        - 🆕 Nuevos usuarios
+        - 🏃 Usuarios activos
+        - 👑 Usuarios avanzados/power users
+        - 👨‍💼 Administradores
+        - 📱 Usuarios móviles principalmente
+        - 💻 Usuarios desktop principalmente
+        - 🌍 Todos los usuarios
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: 📊 Impacto Esperado
+      description: ¿Qué impacto positivo tendría esta característica?
+      placeholder: |
+        - Mejoraría la retención de usuarios
+        - Reduciría el tiempo para completar tareas
+        - Aumentaría el engagement
+        - Haría la aplicación más accesible
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 🔗 Referencias
+      description: Enlaces a ejemplos similares en otras aplicaciones o documentación relevante
+      placeholder: |
+        - https://ejemplo.com/caracteristica-similar
+        - Aplicación X tiene algo parecido que funciona así...
+        - Ver documentación Y para detalles técnicos
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: 🔍 Investigación Previa
+      description: Confirma que has hecho tu tarea antes de proponer
+      options:
+        - label: He verificado que esta característica no existe actualmente
+          required: true
+        - label: He buscado si alguien más la ha solicitado anteriormente
+          required: true
+        - label: He considerado alternativas y workarounds existentes
+          required: true
+
+  - type: checkboxes
+    id: volunteer
+    attributes:
+      label: 🙋‍♂️ Contribución
+      description: ¿Estarías dispuesto a contribuir con la implementación?
+      options:
+        - label: Estaría dispuesto/a a ayudar con el diseño/mockups
+        - label: Estaría dispuesto/a a ayudar con la implementación
+        - label: Estaría dispuesto/a a ayudar con las pruebas
+        - label: Solo puedo proporcionar feedback y sugerencias
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📋 Contexto Adicional
+      description: Cualquier otra información que pueda ser relevante
+      placeholder: |
+        - Casos de uso específicos
+        - Consideraciones de accesibilidad
+        - Requisitos de performance
+        - Compatibilidad con navegadores
