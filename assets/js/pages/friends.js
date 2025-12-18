@@ -155,15 +155,18 @@ const FriendsComponent = {
         const friendsBadge = document.getElementById('friends-badge');
         
         try {
-            const friends = await API.getFriends();
+            const data = await API.listFriends('accepted');
+            const friendships = data.friendships || [];
             
             // Actualizar badge
-            friendsBadge.textContent = friends.length;
+            friendsBadge.textContent = friendships.length;
             
-            if (friends.length === 0) {
+            if (friendships.length === 0) {
                 friendsList.innerHTML = this.renderEmptyState('amigos', 'users');
             } else {
-                friendsList.innerHTML = friends.map(friend => this.renderFriendCard(friend)).join('');
+                friendsList.innerHTML = friendships.map(friendship => 
+                    this.renderFriendCard(friendship.other_user, friendship)
+                ).join('');
             }
             
         } catch (error) {
@@ -182,17 +185,13 @@ const FriendsComponent = {
         const sentBadge = document.getElementById('sent-badge');
         
         try {
-            const allRequests = await API.getFriendRequests();
-            const currentUserId = Auth.getCurrentUser().id;
+            const data = await API.listFriends('pending');
+            const allRequests = data.friendships || [];
+            const currentUserId = Auth.getCurrentUser().user_uuid || Auth.getCurrentUser().uuid;
             
             // Separar solicitudes recibidas y enviadas
-            const receivedRequests = allRequests.filter(req => 
-                req.receiver_id === currentUserId && req.status === 'pending'
-            );
-            
-            const sentRequests = allRequests.filter(req => 
-                req.sender_id === currentUserId && req.status === 'pending'
-            );
+            const receivedRequests = allRequests.filter(req => req.requested_by_me === false);
+            const sentRequests = allRequests.filter(req => req.requested_by_me === true);
             
             // Actualizar badges
             requestsBadge.textContent = receivedRequests.length;
@@ -203,7 +202,7 @@ const FriendsComponent = {
                 requestsList.innerHTML = this.renderEmptyState('solicitudes pendientes', 'clock');
             } else {
                 requestsList.innerHTML = receivedRequests.map(request => 
-                    this.renderRequestCard(request, 'received')
+                    this.renderRequestCard(request.other_user, request, 'received')
                 ).join('');
             }
             
@@ -212,7 +211,7 @@ const FriendsComponent = {
                 sentList.innerHTML = this.renderEmptyState('solicitudes enviadas', 'paper-plane');
             } else {
                 sentList.innerHTML = sentRequests.map(request => 
-                    this.renderRequestCard(request, 'sent')
+                    this.renderRequestCard(request.other_user, request, 'sent')
                 ).join('');
             }
             
@@ -226,34 +225,31 @@ const FriendsComponent = {
     /**
      * Renderizar tarjeta de amigo
      */
-    renderFriendCard(friend) {
+    renderFriendCard(friend, friendship) {
+        const avatar = friend.avatar_url 
+            ? CONFIG.API_BASE_URL + friend.avatar_url
+            : `https://ui-avatars.com/api/?name=${encodeURIComponent(friend.first_name + ' ' + friend.last_name)}&size=80&background=random`;
+            
         return `
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card card-nexo h-100">
                     <div class="card-body text-center">
-                        <img src="${friend.avatar_url || CONFIG.FILES.DEFAULT_AVATAR}" 
+                        <img src="${avatar}" 
                              alt="Avatar" 
                              class="rounded-circle mb-3"
                              style="width: 80px; height: 80px; object-fit: cover;">
                         
                         <h6 class="card-title mb-2">
-                            ${friend.first_name} ${friend.last_name}
+                            ${friend.first_name || ''} ${friend.last_name || ''}
                         </h6>
                         
                         <p class="card-text text-muted small mb-3">
-                            <i class="fas fa-envelope me-1"></i>
-                            ${friend.email}
+                            @${friend.username}
                         </p>
-                        
-                        ${friend.bio ? `
-                            <p class="card-text small text-muted mb-3">
-                                "${friend.bio}"
-                            </p>
-                        ` : ''}
                         
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-danger btn-sm remove-friend-btn" 
-                                    data-user-id="${friend.id}"
+                                    data-user-uuid="${friend.uuid}"
                                     data-user-name="${friend.first_name} ${friend.last_name}">
                                 <i class="fas fa-user-minus me-1"></i>
                                 Eliminar Amigo
@@ -262,7 +258,7 @@ const FriendsComponent = {
                         
                         <div class="mt-2">
                             <small class="text-muted">
-                                Amigos desde ${new Date(friend.friendship_date).toLocaleDateString('es-ES')}
+                                Amigos desde ${new Date(friendship.created_at).toLocaleDateString('es-ES')}
                             </small>
                         </div>
                     </div>
@@ -274,43 +270,38 @@ const FriendsComponent = {
     /**
      * Renderizar tarjeta de solicitud
      */
-    renderRequestCard(request, type) {
-        const user = type === 'received' ? request.sender : request.receiver;
-        
+    renderRequestCard(user, request, type) {
+        const avatar = user.avatar_url 
+            ? CONFIG.API_BASE_URL + user.avatar_url
+            : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name + ' ' + user.last_name)}&size=80&background=random`;
+            
         return `
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card card-nexo h-100">
                     <div class="card-body text-center">
-                        <img src="${user.avatar_url || CONFIG.FILES.DEFAULT_AVATAR}" 
+                        <img src="${avatar}" 
                              alt="Avatar" 
                              class="rounded-circle mb-3"
                              style="width: 80px; height: 80px; object-fit: cover;">
                         
                         <h6 class="card-title mb-2">
-                            ${user.first_name} ${user.last_name}
+                            ${user.first_name || ''} ${user.last_name || ''}
                         </h6>
                         
                         <p class="card-text text-muted small mb-3">
-                            <i class="fas fa-envelope me-1"></i>
-                            ${user.email}
+                            @${user.username}
                         </p>
-                        
-                        ${user.bio ? `
-                            <p class="card-text small text-muted mb-3">
-                                "${user.bio}"
-                            </p>
-                        ` : ''}
                         
                         ${type === 'received' ? `
                             <div class="d-grid gap-2">
                                 <button class="btn btn-nexo btn-sm accept-request-btn" 
-                                        data-request-id="${request.id}"
+                                        data-user-uuid="${user.uuid}"
                                         data-user-name="${user.first_name} ${user.last_name}">
                                     <i class="fas fa-check me-1"></i>
                                     Aceptar
                                 </button>
                                 <button class="btn btn-outline-danger btn-sm reject-request-btn" 
-                                        data-request-id="${request.id}"
+                                        data-user-uuid="${user.uuid}"
                                         data-user-name="${user.first_name} ${user.last_name}">
                                     <i class="fas fa-times me-1"></i>
                                     Rechazar
@@ -392,9 +383,9 @@ const FriendsComponent = {
         document.addEventListener('click', (e) => {
             if (e.target.closest('.remove-friend-btn')) {
                 const btn = e.target.closest('.remove-friend-btn');
-                const userId = btn.dataset.userId;
+                const userUuid = btn.dataset.userUuid;
                 const userName = btn.dataset.userName;
-                this.confirmRemoveFriend(userId, userName);
+                this.confirmRemoveFriend(userUuid, userName);
             }
         });
         
@@ -402,9 +393,9 @@ const FriendsComponent = {
         document.addEventListener('click', (e) => {
             if (e.target.closest('.accept-request-btn')) {
                 const btn = e.target.closest('.accept-request-btn');
-                const requestId = btn.dataset.requestId;
+                const userUuid = btn.dataset.userUuid;
                 const userName = btn.dataset.userName;
-                this.acceptFriendRequest(requestId, userName);
+                this.acceptFriendRequest(userUuid, userName);
             }
         });
         
@@ -412,9 +403,9 @@ const FriendsComponent = {
         document.addEventListener('click', (e) => {
             if (e.target.closest('.reject-request-btn')) {
                 const btn = e.target.closest('.reject-request-btn');
-                const requestId = btn.dataset.requestId;
+                const userUuid = btn.dataset.userUuid;
                 const userName = btn.dataset.userName;
-                this.confirmRejectRequest(requestId, userName);
+                this.confirmRejectRequest(userUuid, userName);
             }
         });
     },
@@ -422,7 +413,7 @@ const FriendsComponent = {
     /**
      * Confirmar eliminación de amigo
      */
-    confirmRemoveFriend(userId, userName) {
+    confirmRemoveFriend(userUuid, userName) {
         const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
         
         document.getElementById('confirmModalTitle').textContent = 'Eliminar Amigo';
@@ -436,7 +427,7 @@ const FriendsComponent = {
         confirmBtn.className = 'btn btn-danger';
         
         confirmBtn.onclick = () => {
-            this.removeFriend(userId);
+            this.removeFriend(userUuid);
             modal.hide();
         };
         
@@ -446,7 +437,7 @@ const FriendsComponent = {
     /**
      * Confirmar rechazo de solicitud
      */
-    confirmRejectRequest(requestId, userName) {
+    confirmRejectRequest(userUuid, userName) {
         const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
         
         document.getElementById('confirmModalTitle').textContent = 'Rechazar Solicitud';
@@ -459,7 +450,7 @@ const FriendsComponent = {
         confirmBtn.className = 'btn btn-danger';
         
         confirmBtn.onclick = () => {
-            this.rejectFriendRequest(requestId, userName);
+            this.rejectFriendRequest(userUuid, userName);
             modal.hide();
         };
         
@@ -469,12 +460,12 @@ const FriendsComponent = {
     /**
      * Eliminar amigo
      */
-    async removeFriend(userId) {
+    async removeFriend(userUuid) {
         try {
-            await API.removeFriend(userId);
+            await API.unfriend(userUuid);
             
             // Mostrar mensaje de éxito
-            this.showToast(CONFIG.MESSAGES.FRIEND_REMOVED, 'success');
+            alert('Amigo eliminado');
             
             // Recargar datos
             await this.loadAllData();
@@ -488,12 +479,12 @@ const FriendsComponent = {
     /**
      * Aceptar solicitud de amistad
      */
-    async acceptFriendRequest(requestId, userName) {
+    async acceptFriendRequest(userUuid, userName) {
         try {
-            await API.acceptFriendRequest(requestId);
+            await API.acceptFriend(userUuid);
             
             // Mostrar mensaje de éxito
-            this.showToast(CONFIG.MESSAGES.FRIEND_REQUEST_ACCEPTED, 'success');
+            alert(`Solicitud de ${userName} aceptada`);
             
             // Recargar datos
             await this.loadAllData();
@@ -514,12 +505,12 @@ const FriendsComponent = {
     /**
      * Rechazar solicitud de amistad
      */
-    async rejectFriendRequest(requestId, userName) {
+    async rejectFriendRequest(userUuid, userName) {
         try {
-            await API.rejectFriendRequest(requestId);
+            await API.rejectFriend(userUuid);
             
             // Mostrar mensaje de éxito
-            this.showToast(CONFIG.MESSAGES.FRIEND_REQUEST_REJECTED, 'success');
+            alert(`Solicitud de ${userName} rechazada`);
             
             // Recargar datos
             await this.loadAllData();

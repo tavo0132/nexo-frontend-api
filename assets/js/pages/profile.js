@@ -165,7 +165,7 @@ const ProfileComponent = {
      */
     async loadProfileData() {
         try {
-            const user = await API.getUserProfile();
+            const user = await API.getMyProfile();
             
             // Renderizar header del perfil
             this.renderProfileHeader(user);

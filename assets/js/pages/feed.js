@@ -28,12 +28,12 @@ const FeedComponent = {
                                 <i class="fas fa-rss me-2 text-primary"></i>
                                 Feed
                             </h2>
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-sm btn-outline-primary active">
+                            <div class="btn-group" role="group" id="feed-filter-buttons">
+                                <button type="button" class="btn btn-sm btn-outline-primary active" data-filter="all">
                                     <i class="fas fa-globe me-1"></i>
                                     Todos
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-primary" disabled>
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-filter="friends">
                                     <i class="fas fa-user-friends me-1"></i>
                                     Amigos
                                 </button>
@@ -71,6 +71,7 @@ const FeedComponent = {
      */
     async init() {
         this.currentUser = Auth.getCurrentUser();
+        this.currentFilter = 'all'; // all o friends
         
         // Renderizar componente para crear post
         const createPostContainer = document.getElementById('create-post-container');
@@ -79,8 +80,37 @@ const FeedComponent = {
             CreatePostComponent.init();
         }
         
+        // Agregar event listeners a los botones de filtro
+        this.attachFilterListeners();
+        
         // Cargar posts iniciales
         await this.loadPosts();
+    },
+    
+    /**
+     * Agregar event listeners a los botones de filtro
+     */
+    attachFilterListeners() {
+        const filterButtons = document.getElementById('feed-filter-buttons');
+        if (!filterButtons) return;
+        
+        filterButtons.addEventListener('click', async (e) => {
+            const btn = e.target.closest('button[data-filter]');
+            if (!btn) return;
+            
+            const filter = btn.dataset.filter;
+            if (filter === this.currentFilter) return; // Ya está en ese filtro
+            
+            // Actualizar estado
+            this.currentFilter = filter;
+            
+            // Actualizar botones activos
+            filterButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Recargar posts con el nuevo filtro
+            await this.loadPosts(0);
+        });
     },
     
     /**
@@ -90,10 +120,17 @@ const FeedComponent = {
         const feedContainer = document.getElementById('feed-container');
         
         try {
-            const response = await API.getPosts({
+            const params = {
                 limit: 20,
                 offset: offset
-            });
+            };
+            
+            // Agregar filtro de amigos si está activo
+            if (this.currentFilter === 'friends') {
+                params.friends_only = true;
+            }
+            
+            const response = await API.getPosts(params);
             
             if (response.posts && response.posts.length > 0) {
                 // Agregar posts al array
