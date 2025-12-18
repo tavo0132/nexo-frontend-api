@@ -110,36 +110,58 @@ const RegisterComponent = {
                                                     Usaremos este email para enviarte notificaciones importantes.
                                                 </div>
                                             </div>
-                                            
-                                            <!-- Password -->
-                                            <div class="mb-3">
-                                                <label for="password" class="form-label form-label-nexo">
-                                                    <i class="fas fa-lock me-1"></i>
-                                                    Contraseña *
-                                                </label>
-                                                <div class="position-relative">
-                                                    <input type="password" 
-                                                           class="form-control form-control-nexo" 
-                                                           id="password" 
-                                                           name="password"
-                                                           placeholder="Mínimo 6 caracteres"
-                                                           required>
-                                                    <button type="button" 
-                                                            class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3" 
-                                                            id="toggle-password"
-                                                            tabindex="-1">
-                                                        <i class="fas fa-eye text-muted"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="invalid-feedback"></div>
-                                                <!-- Password strength indicator -->
-                                                <div class="password-strength mt-2">
-                                                    <div class="progress" style="height: 4px;">
-                                                        <div class="progress-bar" id="password-strength-bar"></div>
-                                                    </div>
-                                                    <small class="text-muted" id="password-strength-text"></small>
-                                                </div>
-                                            </div>
+                            
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label form-label-nexo">
+                                    <i class="fas fa-at me-1"></i>
+                                    Nombre de Usuario *
+                                </label>
+                                <input type="text" 
+                                       class="form-control form-control-nexo" 
+                                       id="username" 
+                                       name="username"
+                                       placeholder="mi_usuario_unico"
+                                       required
+                                       minlength="3"
+                                       maxlength="20"
+                                       pattern="^[a-zA-Z0-9_]+$">
+                                <div class="invalid-feedback"></div>
+                                <div class="form-text text-muted">
+                                    Solo letras, números y guión bajo. Entre 3 y 20 caracteres.
+                                </div>
+                            </div>
+                            
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label form-label-nexo">
+                                    <i class="fas fa-lock me-1"></i>
+                                    Contraseña *
+                                </label>
+                                <div class="position-relative">
+                                    <input type="password" 
+                                           class="form-control form-control-nexo" 
+                                           id="password" 
+                                           name="password"
+                                           placeholder="Crea una contraseña segura"
+                                           required
+                                           minlength="6">
+                                    <button type="button" 
+                                            class="btn btn-outline-secondary position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent"
+                                            onclick="RegisterComponent.togglePasswordVisibility('password')"
+                                            tabindex="-1">
+                                        <i class="fas fa-eye text-muted"></i>
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback"></div>
+                                <!-- Password strength indicator -->
+                                <div class="password-strength mt-2">
+                                    <div class="progress" style="height: 4px;">
+                                        <div class="progress-bar" id="password-strength-bar"></div>
+                                    </div>
+                                    <small class="text-muted" id="password-strength-text"></small>
+                                </div>
+                            </div>
                                             
                                             <!-- Confirm Password -->
                                             <div class="mb-3">
@@ -314,6 +336,7 @@ const RegisterComponent = {
         
         const formData = new FormData(event.target);
         const userData = {
+            username: formData.get('username').trim(),
             first_name: formData.get('first_name').trim(),
             last_name: formData.get('last_name').trim(),
             email: formData.get('email').trim(),
@@ -343,24 +366,31 @@ const RegisterComponent = {
             // Remover confirm_password antes de enviar
             delete userData.confirm_password;
             
+            console.log('=== REGISTER DEBUG ===');
+            console.log('User data to send:', userData);
+            
             // Intentar registro
             const result = await Auth.register(userData);
             
+            console.log('Register result:', result);
+            
             if (result.success) {
-                // Mostrar éxito
-                this.showAlert(result.message, 'success');
-                
-                // Redirigir después de un momento
-                setTimeout(() => {
-                    Router.navigate('/login');
-                }, 2000);
+                // Mostrar éxito con opciones
+                this.showSuccessWithActions(result.message);
             } else {
-                // Mostrar error
-                this.showAlert(result.message, 'error');
+                // Mostrar error específico del backend
+                const errorMessage = result.message || result.error || 'Error en el registro';
+                this.showAlert(errorMessage, 'error');
+                CONFIG.log('Register failed: ' + errorMessage, 'error');
             }
         } catch (error) {
             CONFIG.log('Register error: ' + error.message, 'error');
-            this.showAlert(CONFIG.MESSAGES.REGISTER_ERROR, 'error');
+            // Intentar extraer mensaje del error si es una respuesta HTTP
+            let errorMessage = CONFIG.MESSAGES.REGISTER_ERROR;
+            if (error.response && error.response.error) {
+                errorMessage = error.response.error;
+            }
+            this.showAlert(errorMessage, 'error');
         } finally {
             this.setLoading(false);
         }
@@ -373,6 +403,10 @@ const RegisterComponent = {
         let isValid = true;
         
         // Validar campos requeridos
+        if (!this.validateUsername(userData.username, document.getElementById('username'))) {
+            isValid = false;
+        }
+        
         if (!this.validateName(userData.first_name, document.getElementById('first_name'))) {
             isValid = false;
         }
@@ -401,6 +435,30 @@ const RegisterComponent = {
         return isValid;
     },
     
+    /**
+     * Validar nombre de usuario
+     */
+    validateUsername(username, field = null) {
+        if (!username || username.length < 3) {
+            if (field) this.setFieldError(field, 'El nombre de usuario debe tener al menos 3 caracteres');
+            return false;
+        }
+        
+        if (username.length > 20) {
+            if (field) this.setFieldError(field, 'El nombre de usuario no puede tener más de 20 caracteres');
+            return false;
+        }
+        
+        const usernameRegex = /^[a-zA-Z0-9_]+$/;
+        if (!usernameRegex.test(username)) {
+            if (field) this.setFieldError(field, 'Solo se permiten letras, números y guión bajo');
+            return false;
+        }
+        
+        if (field) this.clearFieldError(field);
+        return true;
+    },
+
     /**
      * Validar nombre
      */
@@ -617,11 +675,77 @@ const RegisterComponent = {
             </div>
         `;
         
-        // Auto-hide después de unos segundos
-        if (type === 'success') {
+        // Solo auto-hide errores, no éxitos
+        if (type === 'error') {
             setTimeout(() => {
                 alertsContainer.innerHTML = '';
-            }, 3000);
+            }, 5000);
+        }
+    },
+
+    /**
+     * Mostrar mensaje de éxito con opciones de acción
+     */
+    showSuccessWithActions(message) {
+        const alertsContainer = document.getElementById('register-alerts');
+        
+        alertsContainer.innerHTML = `
+            <div class="alert alert-nexo alert-nexo-success fade-in">
+                <div class="d-flex align-items-start">
+                    <i class="fas fa-check-circle me-3 mt-1"></i>
+                    <div class="flex-grow-1">
+                        <h5 class="alert-heading mb-2">¡Registro Exitoso!</h5>
+                        <p class="mb-3">${message}</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-success btn-sm" id="go-to-login">
+                                <i class="fas fa-sign-in-alt me-1"></i>
+                                Iniciar Sesión
+                            </button>
+                            <button type="button" class="btn btn-outline-success btn-sm" id="register-another">
+                                <i class="fas fa-user-plus me-1"></i>
+                                Registrar Otro Usuario
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Agregar event listeners a los botones
+        setTimeout(() => {
+            const goToLoginBtn = document.getElementById('go-to-login');
+            const registerAnotherBtn = document.getElementById('register-another');
+            
+            if (goToLoginBtn) {
+                goToLoginBtn.addEventListener('click', () => {
+                    Router.navigate('/login');
+                });
+            }
+            
+            if (registerAnotherBtn) {
+                registerAnotherBtn.addEventListener('click', () => {
+                    this.clearForm();
+                    this.clearAlerts();
+                    // Focus en el primer campo
+                    const firstNameField = document.getElementById('first_name');
+                    if (firstNameField) firstNameField.focus();
+                });
+            }
+        }, 100);
+    },
+
+    /**
+     * Limpiar formulario
+     */
+    clearForm() {
+        const form = document.getElementById('register-form');
+        if (form) {
+            form.reset();
+            // Limpiar errores de validación
+            const invalidFields = form.querySelectorAll('.is-invalid');
+            invalidFields.forEach(field => field.classList.remove('is-invalid'));
+            const feedbacks = form.querySelectorAll('.invalid-feedback');
+            feedbacks.forEach(feedback => feedback.textContent = '');
         }
     },
     

@@ -9,6 +9,11 @@ const API = {
     async request(endpoint, options = {}) {
         const url = CONFIG.getFullApiUrl(endpoint);
         
+        console.log('=== API REQUEST DEBUG ===');
+        console.log('Endpoint:', endpoint);
+        console.log('Full URL:', url);
+        console.log('Options:', options);
+        
         // Headers por defecto
         const defaultHeaders = {
             'Content-Type': 'application/json',
@@ -36,8 +41,10 @@ const API = {
         
         try {
             CONFIG.log(`${requestOptions.method} ${url}`, 'info');
+            console.log('Request options:', requestOptions);
             
             const response = await fetch(url, requestOptions);
+            console.log('Response received:', response.status, response.statusText);
             
             // Manejar respuestas sin contenido
             if (response.status === 204) {

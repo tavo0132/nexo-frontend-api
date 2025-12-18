@@ -79,7 +79,7 @@ const Auth = {
     async login(email, password) {
         try {
             const response = await API.post(CONFIG.API_ENDPOINTS.LOGIN, {
-                email,
+                username: email,
                 password
             });
             
