@@ -185,16 +185,33 @@ const API = {
     // Usuarios
     getUsers: (params) => API.get(CONFIG.API_ENDPOINTS.USERS, params),
     getUserProfile: () => API.get(CONFIG.API_ENDPOINTS.USER_PROFILE),
+    getMyProfile: () => API.get('/users/me'),
+    getUserPublic: (userId) => API.get(`/users/${userId}`),
+    listUserPosts: (userId) => API.get(`/users/${userId}/posts`),
+    searchUsers: (query, limit = 20, offset = 0) => API.get('/users/search', { q: query, limit, offset }),
     updateProfile: (userData) => API.put(CONFIG.API_ENDPOINTS.UPDATE_PROFILE, userData),
+    updateMyProfile: (userData) => API.patch('/users/me', userData),
     uploadAvatar: (file) => API.uploadFile(CONFIG.API_ENDPOINTS.UPLOAD_AVATAR, file, 'avatar'),
+    updateMyAvatar: (formData) => API.patch('/users/me/avatar', formData),
     
     // Amistades
     getFriends: () => API.get(CONFIG.API_ENDPOINTS.FRIENDS),
+    listFriends: (status = '') => API.get(`/friends${status ? '?status=' + status : ''}`),
     getFriendRequests: () => API.get(CONFIG.API_ENDPOINTS.FRIEND_REQUESTS),
     sendFriendRequest: (userId) => API.post(CONFIG.API_ENDPOINTS.SEND_REQUEST, { user_id: userId }),
+    requestFriend: (toUserUuid) => API.post('/friends/request', { to_user_uuid: toUserUuid }),
     acceptFriendRequest: (requestId) => API.post(CONFIG.API_ENDPOINTS.ACCEPT_REQUEST, { request_id: requestId }),
+    acceptFriend: (userUuid) => API.post('/friends/accept', { user_uuid: userUuid }),
     rejectFriendRequest: (requestId) => API.post(CONFIG.API_ENDPOINTS.REJECT_REQUEST, { request_id: requestId }),
+    rejectFriend: (userUuid) => API.post('/friends/reject', { user_uuid: userUuid }),
     removeFriend: (userId) => API.delete(`${CONFIG.API_ENDPOINTS.REMOVE_FRIEND}/${userId}`),
+    unfriend: (userUuid) => API.post('/friends/unfriend', { user_uuid: userUuid }),
+    
+    // Interacciones
+    listMyInteractions: (params = {}) => {
+        const { user_search = '', limit = 20, offset = 0 } = params;
+        return API.get('/me/interactions', { user_search, limit, offset });
+    },
     
     // Posts
     getPosts: (params) => API.get('/posts', params),

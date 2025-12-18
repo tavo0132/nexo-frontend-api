@@ -52,6 +52,13 @@ const NavbarComponent = {
                                 </li>
                                 
                                 <li class="nav-item">
+                                    <a class="nav-link" href="/interactions" data-route="/interactions">
+                                        <i class="fas fa-bell me-1"></i>
+                                        Interacciones
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
                                     <a class="nav-link" href="/users" data-route="/users">
                                         <i class="fas fa-search me-1"></i>
                                         Buscar Personas
@@ -113,6 +120,12 @@ const NavbarComponent = {
                         <a class="dropdown-item" href="/friends" data-route="/friends">
                             <i class="fas fa-users me-2"></i>
                             Mis Amigos
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="/interactions" data-route="/interactions">
+                            <i class="fas fa-bell me-2"></i>
+                            Interacciones
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>

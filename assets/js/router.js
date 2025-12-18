@@ -77,6 +77,12 @@ class Router {
             requiresAuth: true
         });
         
+        this.addRoute('/interactions', {
+            title: 'Interacciones - Nexo',
+            component: 'interactions',
+            requiresAuth: true
+        });
+        
         this.addRoute('/users', {
             title: 'Usuarios - Nexo',
             component: 'users',
@@ -247,6 +253,9 @@ class Router {
                 case 'friends':
                     content = await FriendsComponent.render();
                     break;
+                case 'interactions':
+                    content = await InteractionsComponent.render();
+                    break;
                 case 'users':
                     content = await UsersComponent.render();
                     break;
@@ -299,6 +308,11 @@ class Router {
                 case 'friends':
                     if (typeof FriendsComponent.init === 'function') {
                         await FriendsComponent.init();
+                    }
+                    break;
+                case 'interactions':
+                    if (typeof InteractionsComponent.afterRender === 'function') {
+                        await InteractionsComponent.afterRender();
                     }
                     break;
                 case 'users':
