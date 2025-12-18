@@ -237,9 +237,9 @@ const LoginComponent = {
                 // Mostrar éxito
                 this.showAlert(result.message, 'success');
                 
-                // Redirigir después de un momento
+                // Redirigir al feed después de un momento
                 setTimeout(() => {
-                    Router.navigate('/profile');
+                    Router.navigate('/feed');
                 }, 1000);
             } else {
                 // Mostrar error

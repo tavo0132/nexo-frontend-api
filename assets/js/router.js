@@ -65,6 +65,12 @@ class Router {
             requiresAuth: true
         });
         
+        this.addRoute('/feed', {
+            title: 'Feed - Nexo',
+            component: 'feed',
+            requiresAuth: true
+        });
+        
         this.addRoute('/friends', {
             title: 'Mis Amigos - Nexo',
             component: 'friends',
@@ -235,6 +241,9 @@ class Router {
                 case 'profile':
                     content = await ProfileComponent.render();
                     break;
+                case 'feed':
+                    content = await FeedComponent.render();
+                    break;
                 case 'friends':
                     content = await FriendsComponent.render();
                     break;
@@ -280,6 +289,11 @@ class Router {
                 case 'profile':
                     if (typeof ProfileComponent.init === 'function') {
                         await ProfileComponent.init();
+                    }
+                    break;
+                case 'feed':
+                    if (typeof FeedComponent.init === 'function') {
+                        await FeedComponent.init();
                     }
                     break;
                 case 'friends':

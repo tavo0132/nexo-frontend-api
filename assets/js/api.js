@@ -195,6 +195,17 @@ const API = {
     acceptFriendRequest: (requestId) => API.post(CONFIG.API_ENDPOINTS.ACCEPT_REQUEST, { request_id: requestId }),
     rejectFriendRequest: (requestId) => API.post(CONFIG.API_ENDPOINTS.REJECT_REQUEST, { request_id: requestId }),
     removeFriend: (userId) => API.delete(`${CONFIG.API_ENDPOINTS.REMOVE_FRIEND}/${userId}`),
+    
+    // Posts
+    getPosts: (params) => API.get('/posts', params),
+    getPost: (postId) => API.get(`/posts/${postId}`),
+    createPost: (postData) => API.post('/posts', postData),
+    deletePost: (postId) => API.delete(`/posts/${postId}`),
+    likePost: (postId) => API.post(`/posts/${postId}/like`),
+    unlikePost: (postId) => API.post(`/posts/${postId}/unlike`),
+    getComments: (postId) => API.get(`/posts/${postId}/comments`),
+    createComment: (postId, content) => API.post(`/posts/${postId}/comments`, { content }),
+    deleteComment: (postId, commentId) => API.delete(`/posts/${postId}/comments/${commentId}`),
 };
 
 /**

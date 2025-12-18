@@ -38,6 +38,13 @@ const NavbarComponent = {
                             
                             ${isAuthenticated ? `
                                 <li class="nav-item">
+                                    <a class="nav-link" href="/feed" data-route="/feed">
+                                        <i class="fas fa-rss me-1"></i>
+                                        Feed
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
                                     <a class="nav-link" href="/friends" data-route="/friends">
                                         <i class="fas fa-users me-1"></i>
                                         Mis Amigos

@@ -288,3 +288,92 @@ body {
   from { transform: translateX(-100%); }
   to { transform: translateX(0); }
 }
+
+/* ===================================
+   ESTILOS DE POSTS Y FEED
+   =================================== */
+
+.post-card {
+  transition: all 0.3s ease;
+  border: 1px solid #dee2e6;
+}
+
+.post-card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.post-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.post-content p:last-child {
+  margin-bottom: 0;
+}
+
+.post-actions .btn-link {
+  color: #6c757d;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.post-actions .btn-link:hover {
+  color: var(--nexo-light-blue);
+}
+
+.post-actions .like-btn i.text-danger {
+  color: #e74c3c !important;
+}
+
+.comments-section {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.comment {
+  animation: fadeIn 0.3s ease;
+}
+
+.comment .bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.comment-form .form-control {
+  border-radius: 20px;
+}
+
+.comment-form .btn {
+  border-radius: 0 20px 20px 0;
+}
+
+/* Textarea para crear posts */
+#post-content {
+  resize: none;
+  border: 2px solid #dee2e6;
+  transition: border-color 0.2s ease;
+}
+
+#post-content:focus {
+  border-color: var(--nexo-light-blue);
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Botones de acción de posts */
+.post-actions button {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .post-card {
+    margin-bottom: 1rem;
+  }
+  
+  .post-content {
+    font-size: 0.95rem;
+  }
+}
